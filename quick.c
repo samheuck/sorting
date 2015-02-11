@@ -1,9 +1,40 @@
 #include <stdlib.h>
 #include <time.h>
 
-int* randelem(int *head, int *tail) {
+void quicksort(int *head, int *tail);
+int* select_pivot(int *head, int *tail);
+int* partition(int *l, int *r);
+
+void quicksort(int *head, int *tail) {
+    if (head < tail) {
+        if (tail - head <= 1024) {
+            insertionsort(head, (tail - head) + 1);
+        } else {
+            swap(head, select_pivot(head, tail));
+            int *pivot = partition(head, tail);
+            quicksort(head, pivot - 1);
+            quicksort(pivot + 1, tail);
+        }
+    }
+}
+
+int* select_pivot(int *head, int *tail) {
     srand(time(NULL));
-    return &head[rand() % (tail - head)];
+    int range = (tail - head);
+    int *a = head;
+    int *b = head + (rand() % range);
+    int *c = tail;
+    int *median;
+
+    if ((*a - *b) * (*c - *a) >= 0) {
+        median = a;
+    } else if ((*b - *a) * (*c - *b) >= 0) {
+        median = b;
+    } else {
+        median = c;
+    }
+
+    return median;
 }
 
 int* partition(int *l, int *r) {
@@ -19,17 +50,5 @@ int* partition(int *l, int *r) {
     }
 
     swap(l, --a);
-
     return a;
-}
-
-void quicksort(int *head, int *tail) {
-    int *pivot;
-
-    while (head < tail) {
-        swap(head, randelem(head, tail));
-        pivot = partition(head, tail);
-        quicksort(head, pivot - 1);
-        head = pivot + 1;
-    }
 }

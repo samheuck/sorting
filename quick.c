@@ -3,7 +3,7 @@
 
 void quicksort(int *a, int size);
 void qs(int *a, int lo, int hi);
-int* select_pivot(int *head, int hi);
+int* select_pivot(int *head, int n);
 
 void quicksort(int *a, int n) {
     qs(a, 0, n - 1);
@@ -12,8 +12,14 @@ void quicksort(int *a, int n) {
 void qs(int *a, int l, int r) {
     int len = r - l + 1;
 
-    if (len <= 1024) {
-        insertionsort(&a[l], len);
+    if (len <= 8) {
+        // insertionsort
+        for (int i = l; i <= r; i++) {
+            for (int j = i; j > l && a[j] < a[j-1]; j--) {
+                swap(&a[j], &a[j-1]);
+            }
+        }
+
         return;
     }
 

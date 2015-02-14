@@ -1,54 +1,68 @@
 #include <stdlib.h>
 #include <time.h>
 
-void quicksort(int *head, int *tail);
-int* select_pivot(int *head, int *tail);
-int* partition(int *l, int *r);
+void quicksort(int *a, int size);
+void qs(int *a, int lo, int hi);
+int* select_pivot(int *head, int hi);
 
-void quicksort(int *head, int *tail) {
-    if (head < tail) {
-        if (tail - head <= 1024) {
-            insertionsort(head, (tail - head) + 1);
-        } else {
-            swap(head, select_pivot(head, tail));
-            int *pivot = partition(head, tail);
-            quicksort(head, pivot - 1);
-            quicksort(pivot + 1, tail);
-        }
-    }
+void quicksort(int *a, int n) {
+    qs(a, 0, n - 1);
 }
 
-int* select_pivot(int *head, int *tail) {
-    srand(time(NULL));
-    int range = (tail - head);
-    int *a = head;
-    int *b = head + (rand() % range);
-    int *c = tail;
-    int *median;
+void qs(int *a, int l, int r) {
+    int len = r - l + 1;
 
-    if ((*a - *b) * (*c - *a) >= 0) {
-        median = a;
-    } else if ((*b - *a) * (*c - *b) >= 0) {
-        median = b;
-    } else {
-        median = c;
+    if (len <= 1024) {
+        insertionsort(&a[l], len);
+        return;
     }
 
-    return median;
-}
+    int i = l - 1;
+    int j = r;
+    int p = l - 1;
+    int q = r;
+    int pivot = a[r];
 
-int* partition(int *l, int *r) {
-    int pivot = *l,
-        *a = l + 1,
-        *b = l;
+    for (;;) {
+        // scan ltr, stop when greater than pivot
+        while (a[++i] < pivot);
 
-    while(++b <= r) {
-        if (*b <= pivot) {
-            swap(a, b);
-            a++;
+        // scan rtl, stop when less than pivot
+        while (a[--j] > pivot) {
+            if (j == l) break;
+        }
+
+        // stop if pointers cross
+        if (i >= j) break;
+
+        swap(&a[i], &a[j]);
+
+        if (a[i] == pivot) {
+            p++;
+            swap(&a[p], &a[i]);
+        }
+
+        if (a[j] == pivot) {
+            q--;
+            swap(&a[j], &a[q]);
         }
     }
 
-    swap(l, --a);
-    return a;
+    // move initial pivot back to the middle
+    swap(&a[r], &a[i]);
+    j = i - 1;
+    i++;
+
+    // move left pivots to middle
+    for (int k = l; k < p; k++, j--) {
+        swap(&a[k], &a[j]);
+    }
+
+    // move right pivots to middle
+    for (int k = r - 1; k > q; k--, i++) {
+        swap(&a[i], &a[k]);
+    }
+
+    qs(a, l, j);
+    qs(a, i, r);
 }

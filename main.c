@@ -68,7 +68,7 @@ int main() {
     qsort(head, size, sizeof(*head), comp);
     end = (float)clock()/CLOCKS_PER_SEC;
     // printints(head, 10);
-    printf("qsort %19fs\n", end - start);
+    printf("stdlib %18fs\n", end - start);
 
     free(array);
 }

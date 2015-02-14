@@ -3,7 +3,6 @@
 
 void quicksort(int *a, int size);
 void qs(int *a, int lo, int hi);
-int* select_pivot(int *head, int n);
 
 void quicksort(int *a, int n) {
     qs(a, 0, n - 1);

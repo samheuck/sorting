@@ -29,19 +29,25 @@ int main() {
 
     float start, end;
 
-    intgen(size, 0, range, head);
-    start = (float)clock()/CLOCKS_PER_SEC;
-    selsort(head, size);
-    end = (float)clock()/CLOCKS_PER_SEC;
-    // printints(head, 10);
-    printf("selection sort %10fs\n", end - start);
+    printf("%i integers, range 0..%i\n\n", size, range);
 
-    intgen(size, 0, range, head);
-    start = (float)clock()/CLOCKS_PER_SEC;
-    insertionsort(head, size);
-    end = (float)clock()/CLOCKS_PER_SEC;
-    // printints(head, 10);
-    printf("insertion sort %10fs\n", end - start);
+    if (size <= 100000) {
+        intgen(size, 0, range, head);
+        start = (float)clock()/CLOCKS_PER_SEC;
+        selsort(head, size);
+        end = (float)clock()/CLOCKS_PER_SEC;
+        // printints(head, 10);
+        printf("selection sort %10fs\n", end - start);
+    }
+
+    if (size <= 200000) {
+        intgen(size, 0, range, head);
+        start = (float)clock()/CLOCKS_PER_SEC;
+        insertionsort(head, size);
+        end = (float)clock()/CLOCKS_PER_SEC;
+        // printints(head, 10);
+        printf("insertion sort %10fs\n", end - start);
+    }
 
     intgen(size, 0, range, head);
     start = (float)clock()/CLOCKS_PER_SEC;
@@ -52,7 +58,6 @@ int main() {
 
     intgen(size, 0, range, head);
     start = (float)clock()/CLOCKS_PER_SEC;
-    // qsort(head, size, sizeof(*head), comp);
     quicksort(head, size);
     end = (float)clock()/CLOCKS_PER_SEC;
     // printints(head, 10);

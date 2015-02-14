@@ -2,7 +2,7 @@
 
 void msort(int *head, int n);
 void divide(int *head, int *tmp, int l, int r);
-void merge();
+void merge(int *head, int *tmp, int l, int mid, int r);
 
 void msort(int *head, int n) {
     int *tmp;

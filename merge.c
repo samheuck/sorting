@@ -16,7 +16,16 @@ void msort(int *head, int n) {
 }
 
 void divide(int *head, int *tmp, int l, int r) {
-    if (l >= r) {
+    int len = r - l + 1;
+
+    if (len <= 8) {
+        // insertionsort
+        for (int i = l; i <= r; i++) {
+            for (int j = i; j > l && head[j] < head[j-1]; j--) {
+                swap(&head[j], &head[j-1]);
+            }
+        }
+
         return;
     }
 
